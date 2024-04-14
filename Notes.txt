@@ -1,0 +1,50 @@
+
+#   See best practices 
+#   See how to nominate files
+#   See precedece order of hooks, usage
+#   How to run commands, tests, type of tests, tags, sources, etc
+#   compiled vs target@
+#   artifacts (Principalmente fresnhess)
+#   dbt build --fail-fast
+#   dbt run --select exclude, etc, flow of pipeline (ver dag representation no dbt docs and dbt serve)
+#   dependent and its dependencies (lembrar o que eh isso relacionado com upstream and downstream)
+#   Usar novamente dbt cloud pra ver como funciona de novo a questao de env variables, etc
+
+#   Lembrar de documentation, tests, integrations and versioning
+#   Jinja main function
+
+#   Singular vs generic tests
+#   Envuiroments 
+#   Target schema(dev, prod, etc)
+
+#   Aqueels jinjas de macro pra mudar comportamento do target schema
+#   treinar ele
+#   data contracts
+#   rever todos cursos, aquele de refactoring eh importante
+#   rever questoes da prova
+#   rever snapshots, extremamente importante
+#   Error config (warning, test, overwrite, etc)
+#  dbt docs generate dbt docs serve
+#  Lineage graph selectors
+#  Setar novamente ambiente cloud do gcp ou oturo pra testar de novo
+#  Ver varias formas de puxar packages, dbt hun, git private, url, etc
+#  Ver sobre deployment, ci cd, etc
+# Dbt cloud and on premise - Dev vs prod target - How to run commands appropriately 
+# Best practice workflows - Drag and drop to correct order -> tinha na prova
+# Exposures
+#Estudar sobre fresnhess
+# Seletores, state, soruce, path, result
+# Get use again with what are these kind of quiestions
+    • Multiple-choice
+    • Fill-in-the-blank
+    • Matching
+    • Hotspot
+    • Build list
+    • Discrete Option Multiple Choice (DOMC)
+----------------------------------------------
+
+Styudy Notes
+- Geralmente de source pra staging apenas transformacoes bem simples 1:1 de source pra stg
+- Rodar varios comandos varias vezes pra ir lembrando e testando com dbt cli 
+stg_
+source_system.table
