@@ -1,0 +1,27 @@
+perfil1:
+  target: explicit
+  outputs:
+    explicit:
+      type: postgres
+      user: username
+      pass: password
+      host: localhost
+      port: 5432
+      threads: 1
+      dbname: postgres
+      schema: public
+    secret:
+      type: postgres
+      user: "{{ env_var('variable1') }}"
+
+DBT_ENV_SECRET_
+- Only available in profiles.yml and packages.yml and not appear in dbt_project.yaml and not appear in logs
+
+
+target.name
+target.type
+target.port
+target.database
+target.schema
+
+models

@@ -1,0 +1,13 @@
+version: 2
+macros: 
+  - name: generate_database_name
+    description: Custom macro name to override custom database name
+    docs:
+      show: true 
+    arguments:
+      - name: custom_database_name
+        type: string 
+        description: nice teste, default is none 
+      - name: node 
+        type: string
+        description: defautlt node, default is nome

@@ -1,0 +1,19 @@
+version: 2
+
+exposures:
+  - name: powerbi
+    label: nicebi
+    type: dashboard
+
+    description: esse eh exposture de powerbi
+    url: 'https://www.google.com'
+    maturity: low
+
+
+    depends_on:
+      - ref('target')
+      - source('raw','target_month')
+  
+    owner:
+      name: oseliocandido 
+      email: oseliocandido@outlook.comn

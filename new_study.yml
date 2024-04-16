@@ -1,0 +1,42 @@
+- No dia da prova, testar idioma layout do teclado pra ver se ta ok, pois possa ser que precise digitar
+ -- rever tipos de questoes da prova 
+
+
+-- Macros são .sql com macro dentro dele 
+
+
+- Target Variables
+ -- target.name
+ -- target.database
+ -- target.schema
+ -- target.port
+
+- Estudar return codes of dbt core and dbt cloud
+
+{{ target.name}}
+
+
+- Ler documentacao e FAQ
+- Ler sobre custom problems como 
+  --https://discourse.getdbt.com/t/creating-an-error-threshold-for-schema-tests/966
+
+- Hooks 
+ -- Rodam antes de models, seeds e snapshots
+ -- pre-hooks and post-hooks
+
+
+
+
+
+
+Sources
+- Se nao passar custom schema, schema vai ser name:
+- Se nao passar custom database, database vai ser target.database:
+
+
+- Quando materializa mesmo relation como table, a view antiga eh deletada, very nice
+
+catalog.json e index.html foram gerados com dbt docs generate
+
+
+Referenced by  eh quando eh usado downstream
