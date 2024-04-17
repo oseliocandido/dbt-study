@@ -25,9 +25,50 @@
  -- pre-hooks and post-hooks
 
 
+-- Geralmente  latest patch version from a specific minor release
+
+Contracts / Constraints
+- Only when contract \n\t enforced: true 
+
+
+constraints:
+  - type: primary_key
+    columns: ['columnaa','columnb']
+  - type: foreign_key
+    columns:
 
 
 
+
+Snapshots
+- 3 config sao obrigatorios (target_schema, strategy, unique_key)
+- Gera 4 campos de metadados 
+ -- dbt_valid_to
+ -- dbt_valid_from
+ -- dbt_updated_at
+ -- dbt_scd_id
+
+ - Na strategegia de timestamp, o dbt_update_at vai ser sempre igual a dbt_valid_from
+  -- Ver como fica na outra estrategia
+ - 
+
+ - Estudar invalidate hard deletes do snapshot
+ - target_database = Default eh target.database,se passavado um novo eh overwrite por cima
+ - target_schema = Obrigatorio e nao eh mesma coisa do target gerado pelo generate_schema_name dos models, seeds e tests
+
+Variables
+- Definido em dbt_project.yml
+- dbt run --vars 
+- Precedence Order
+ -- CLI Args
+ -- Scope Var
+ -- Root Global Var
+ -- Default Arg if not provided
+
+
+
+
+Testar no meu codigo chamar macro, ver como faz, sintaxe, etc
 
 Sources
 - Se nao passar custom schema, schema vai ser name:
