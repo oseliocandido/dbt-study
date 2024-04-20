@@ -8,6 +8,6 @@ macros:
       - name: custom_database_name
         type: string 
         description: nice teste, default is none 
-      - name: node 
+      - name: node   
         type: string
         description: defautlt node, default is nome

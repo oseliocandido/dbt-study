@@ -1,0 +1,26 @@
+sources:
+  - name: jaffle_shop
+    description:  eita
+    config:
+      enabled: True
+    
+    schema: public
+
+    loader: fivetran
+    
+    loaded_at_field: loadtimestamp
+
+    freshness:
+      warn_after: {count: 6, period: day}
+      error_after: {count: 10, period: day}
+
+    meta:
+      contains_pii: true
+      owner: "@oselio"
+
+    tags: ['metadata']
+
+
+    tables:
+      - name: products
+        description: "{{ doc('source_jaffle_shop') }}"

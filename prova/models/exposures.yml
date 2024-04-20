@@ -9,11 +9,12 @@ exposures:
     url: 'https://www.google.com'
     maturity: low
 
-
     depends_on:
-      - ref('target')
-      - source('raw','target_month')
+      - ref('stg_target')
+      - source('stripe','target')
   
     owner:
       name: oseliocandido 
       email: oseliocandido@outlook.comn
+
+#Lembrar o que eh obrigatorio aqui

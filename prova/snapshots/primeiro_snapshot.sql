@@ -7,7 +7,6 @@
     updated_at='loadtimestamp'
 )}}
 
-SELECT * FROM {{source('raw','target_month')}}
-
+SELECT * FROM {{ source('stripe','target')}}
 
 {% endsnapshot %}
