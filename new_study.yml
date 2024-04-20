@@ -1,8 +1,343 @@
+Resources Properties / Config
+models:
+  - name: mais uma tabela
+    description: text or docs block
+    docs:
+      show: true 
+    config:
+      enabled: true 
+      sql_header:  start of the transaction
+      materialized: table, view, incremental, ephemeral
+
+      contract:
+        enforced: true
+      
+      pre-hook: before running this model
+      post-hook: after running this model
+
+      database: generate_database_name macro work
+      schema: generate_schema_name macro work
+      alias: final name in relation 
+
+      meta:
+        nice: 'day'
+        owner: 'jesus'
+      tags: ['a', 'b','c']
+      full_refresh: false
+
+      grants: 
+        +select: ['a','b']
+        role: principal
+        
+    tests:
+      - singular_test
+      - custom_generic_test 
+    
+    constraints:
+      - type: not_null, unique, primary_key, foreign_key, custom, check
+        columns:
+
+    columns:
+      - name:
+        description:
+        meta:
+        tags:
+        data_type: 
+        constraints:
+          - type: foreign_key 
+            expression: schema.table (coluna z)
+        quote: true
+
+
+exposures:
+  - name: powerbi
+    description: bi muito massa 
+    label: nicebi 
+    type: ['dashboard','analysis','notebook','ml','applicaiton']
+    maturity: low, medium, high
+    url: url
+    
+    tags: ['a','b']
+    meta:
+      pii: True
+      department: finances
+
+    depends_on:
+      - source('source_name','nice_day')
+      - ref('teste')
+
+    owner:
+      name:
+      email:
+
+
+snapshots:
+  - name:
+    description:
+    config:
+      enabled: 
+      meta:
+      tags:
+
+
+
+      target_schema: prod
+      target_database: prod_database
+      strategy: timestamp, check
+      updated_at:
+      check_cols:
+      unique_key:
+
+seeds:
+  - name: testando
+    description: mais uma seed simples
+    config:
+      enabled: true 
+
+      column_types:
+      delimiter:
+      quote_columns:
+
+      database:
+      schema:
+      alias:
+
+      persist_docs:
+        relation: true 
+        columns: true 
+
+      pre-hook:
+      post-hook:
+
+      full_refresh: 
+
+      meta:
+      tags:
+
+      grants:
+
+    tests:
+
+
+
+
+tests:
+
+
+
+
+
+
+
+
+
+
+Models
+
+
+
+
+
+
+
+Seeds
+
+
+
+
+
+
+Snapshots
+
+
+- Best Practices
+
+
+Tests
+- https://docs.getdbt.com/best-practices/writing-custom-generic-tests
+ -- Ler parte debaixo tb
+- https://docs.getdbt.com/reference/resource-configs/store_failures
+
+Macros
+
+
+Analsysis
+
+
+Documentation 
+
+
+Enviroments
+https://docs.getdbt.com/docs/environments-in-dbt
+
+DBT Cloud
+https://docs.getdbt.com/docs/cloud/about-cloud/dbt-cloud-features
+
+
+Error TYpes
+- Database, Parsing, COmpliation (Ver no site)
+
+Custom Schemas
+- https://docs.getdbt.com/docs/build/custom-schemas
+
+Graph Operators
+https://docs.getdbt.com/reference/node-selection/set-operators#unions
+
+
+Test Selectors
+https://docs.getdbt.com/reference/node-selection/test-selection-examples
+
+Methods
+https://docs.getdbt.com/reference/node-selection/methods#the-state-method
+
+Defer
+https://docs.getdbt.com/docs/cloud/about-cloud-develop-defer
+
+Threads
+https://docs.getdbt.com/docs/running-a-dbt-project/using-threads
+
+Jinja
+https://docs.getdbt.com/reference/dbt-jinja-functions
+https://docs.getdbt.com/docs/build/jinja-macros
+
+Artifacts
+- Manifest.json, catalog.json, sources.json, run_results.json
+- dbt docs generate gera catalog.json(Relacionado ao dw metadado ) e index.html (site estatico)
+- dbt source freshness gera sources.json (Stale or not, errors, warning, etc)
+- dbt run gera run_results.json 
+- manifest.json sao informacoes do proprio dbt gerados pelo dbt comandos
+
+
+https://docs.getdbt.com/reference/artifacts/dbt-artifacts
+
+
+LER ISSO!
+https://docs.getdbt.com/docs/faqs
+
+
+Best Practices
+https://docs.getdbt.com/best-practices/how-we-structure/1-guide-overview
+
+
+Custom Schemas
+https://docs.getdbt.com/docs/build/custom-schemas
+
+
+LER TODO SITE, FAZER SIMULADO, TESTAR COMANDOS, ETC
+https://docs.getdbt.com/reference/references-overview
+
+Grants (Read about it)
+  - https://docs.getdbt.com/reference/resource-configs/grants
+  - model, seed, snapshot
+  - Privilege and grantee
+
+  - hooks may be appropriate if you want to:
+
+  Apply grants in a more complex or custom manner, beyond what the built-in grants capability can provide.
+  Apply grants on other database objects besides views and tables.
+  Take advantage of more-advanced permission capabilities offered by your data platform, for which dbt does not (yet!) offer out-of-the-box support using resource configuration.
+  Create more granular row- and column-level access, use masking policies, or apply future grants.
+
+Seletores
+https://docs.getdbt.com/reference/node-selection/syntax#about-node-selection
+
+
+CI / Slim CI
+
+
+Materializations
+https://docs.getdbt.com/docs/build/materializations
+
+
+Best Practices
+https://docs.getdbt.com/best-practices
+
+
+State and Defer
+
+Workflows (Importante pois cai na prova)
+https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows
+
+
+Full_refresh Flag 
+-- https://docs.getdbt.com/reference/resource-configs/full_refresh
+- Funciona para models e seeds 
+-- Se tiver setado como config, passa por cima do CLI flag
+-- Se nao tiver setado na config (omitido), CLI flag passa por cima
+
+
+- Ver se preciso estudar isso
+https://docs.getdbt.com/docs/build/unit-tests
+
+
+
+Hooks
+- Models, Seeds e snapshots
+- Acumulativos
+- Precedence Order
+ -- Hooks de pacotes dependentes antes do pacote ativo
+ -- Hooks do projeto  rodam antes do hooks a nivel de config
+ -- Hooks rodam na ordem que sao definidos
+
+
+Documentation 
+- docs kework  -> docs: show: true
+
+Tests
+- Out-of-box Generic Tests
+- Custom Writing of Generic Tests
+- Singular Tests 
+- Test Selectors Mode (Eager, Indirect, etc) -> (TESTAR!)
+
+Contracts
+
+
+Materialization
+- Pros / Cons
+- Types
+- Strategies of Incremental
+- full_refresh macro
+- is_incremental macro
+- on_schema_change use cases
+
+
+Grants Workflow
+
+
+
+Best Practices
+
+
+
+
+
+
+Jinja Expressions
+
+
+
+
+
+
+
+
+
+Exposures
+- Obrigatorio owner, type and name
+
+
+Macros
+
+
+
 - No dia da prova, testar idioma layout do teclado pra ver se ta ok, pois possa ser que precise digitar
  -- rever tipos de questoes da prova 
 
 
--- Macros são .sql com macro dentro dele 
+
+Target Variable (COre and Dbt cloud workflow)
+
+
 
 
 - Target Variables
@@ -15,6 +350,7 @@
 
 {{ target.name}}
 
+- Talvez estudar metric and python models
 
 - Ler documentacao e FAQ
 - Ler sobre custom problems como 
@@ -29,6 +365,7 @@
 
 Contracts / Constraints
 - Only when contract \n\t enforced: true 
+- So funciona para table e incremental
 
 
 constraints:
@@ -37,6 +374,43 @@ constraints:
   - type: foreign_key
     columns:
 
+Enviroments
+- '{{env_var("nice","kkkk")}}'
+- One development branch of each user with specific target.name, dbt versiom, etc
+- Many Production Enviroments 
+ -- env name
+ -- dbt.version 
+ -- Database, schema target, user, credentials
+
+
+-- Study defer method
+
+
+
+
+
+
+
+Jobs
+- Job name
+- target.name
+- States (Defer )
+- Deployed with triggers
+  -- API, schedule, webhooks 
+
+
+Cloud 
+- git clone 
+- dw connection
+- dbt deps 
+- 
+
+
+
+
+
+como dbt source fresness funciona a nivel de source?
+ -- O que resultaria em erro e em o que ele compila?
 
 
 
@@ -47,6 +421,7 @@ Snapshots
  -- dbt_valid_from
  -- dbt_updated_at
  -- dbt_scd_id
+- Ver os valores desses campos quando usa strategy timestamp and check 
 
  - Na strategegia de timestamp, o dbt_update_at vai ser sempre igual a dbt_valid_from
   -- Ver como fica na outra estrategia
@@ -57,6 +432,7 @@ Snapshots
  - target_schema = Obrigatorio e nao eh mesma coisa do target gerado pelo generate_schema_name dos models, seeds e tests
 
 Variables
+- Disponivels em modelos, hooks, macros
 - Definido em dbt_project.yml
 - dbt run --vars 
 - Precedence Order
@@ -81,3 +457,6 @@ catalog.json e index.html foram gerados com dbt docs generate
 
 
 Referenced by  eh quando eh usado downstream
+
+
+

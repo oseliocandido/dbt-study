@@ -777,7 +777,7 @@ post-hook:
 
 
 Macros
-- {{cent_to_dollars()}}
+- {{ cent_to_dollars(() }}
 - Dry vs Readable Code
 - In testes no yaml, so colocar nome sem parentese e sem {{
 - Agora no sql, coloca-se em {{dbt_utils.}}
