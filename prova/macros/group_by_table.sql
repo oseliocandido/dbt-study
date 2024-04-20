@@ -8,6 +8,7 @@
 
 {% set results =  run_query(distinct_values_query) %}
 
+
 {% if execute %} 
     {% set values = results.columns[0].values() %}
 {% endif %}
@@ -18,5 +19,6 @@ SELECT
     SUM(CASE WHEN {{ column_name }} = {{ value }} THEN target ELSE 0 END) AS total_{{ value }}{% if not loop.last %},{% endif %}
     {%- endfor %}
     FROM  {{ ref(model) }} 
+
 
 {% endmacro %}

@@ -24,9 +24,6 @@ clean-targets:
   - "dbt_packages"
 
 # vars:
-#   aisim: 'nice variable'
-#   prova:
-#     ainao: 'desistindo'
 
 
 models:
@@ -47,7 +44,4 @@ snapshots:
   prova:
     +target_database: postgres
     +target_schema: snapshotzim
-
-    # +strategy: check
     +unique_key: sk_target
-    # +check_cols: ['target','targetmonth']

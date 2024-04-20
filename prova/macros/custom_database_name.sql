@@ -7,9 +7,8 @@
     
 {% else %}
 
-     {{ custom_database_name | trim }} 
-    --{{ print("Running with "~ custom_database_name) }}
-   
+    {{ custom_database_name | trim }} 
+
 {% endif %}
 
 {% endmacro %}

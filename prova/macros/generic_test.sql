@@ -13,17 +13,3 @@ SELECT
  FROM base
 
 {% endmacro %}
-
-
--- {{% test generic_column(model, column_name) %}}
-
--- WITH start  AS (
-
--- SELECT 
-
-
--- )
-
-
-
--- {{% endtest %}}

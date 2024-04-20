@@ -1,0 +1,56 @@
+# sources:
+#   - name: jaffle_shop
+#     description: Jaffle Shop Source system of product and salesperson data
+#     config:
+#       enabled: True
+    
+#     database: postgres
+#     schema: public
+
+#     loader: fivetran
+    
+
+#     loaded_at_field: loadtimestamp
+
+
+
+#     #Como na pratica se usa esse comando em termos de atualizacao do pipeline?
+#     #Revisar https://docs.getdbt.com/docs/deploy/source-freshness
+#     #Extremamente importante som souces.json e states (Estudar states)
+
+#     fresnhess:
+#       warn_after: {count: 6, period: day ,hour, minute}
+#       error_after: {count: 10, period: day ,hour, minute}
+#       #filter: "sql statement"
+
+#     #De posse de todo esse fresnehess block, ver qual comando ele compila e run 
+#     #no database e qual criaterio ele vai dar erro, warn ou 0 code (ok)
+
+#      meta:
+#       contains_pii: true
+#       owner: "@oselio"
+
+#     tags: ['metadata']
+
+#     quoting:
+#       database:
+#       schema:
+#       identifier:
+
+#     tables:
+#       - name: product
+#         identifier: products
+#         description: Product Source table 
+
+#         loaded_at_field:
+
+#         fresnhess:
+#           warn_after:
+#           error_after:
+#           filter:
+        
+#         tests:
+
+
+#     #Qual deve ser o schema de producao para tables localizadas no schema "raw"? 
+#     #jaffle_shop, raw, o que??

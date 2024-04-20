@@ -5,9 +5,7 @@ sources:
       enabled: True
     
     schema: public
-
     loader: fivetran
-    
     loaded_at_field: loadtimestamp
 
     freshness:
@@ -19,7 +17,6 @@ sources:
       owner: "@oselio"
 
     tags: ['metadata']
-
 
     tables:
       - name: products
