@@ -1,0 +1,1 @@
+SELECT * FROM {{ref('stg_jaffle_shop_sales_orders')}}

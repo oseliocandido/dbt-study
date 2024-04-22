@@ -349,6 +349,78 @@ CI / Slim CI
 
 
 Materializations
+---------------------------------------------------------------------------------------------------------------------------------------
+- 4 Tipos Basicos 
+ -- View, Table, Ephemeral, Incremental
+
+- Tables
+ -- Faster to Query
+ -- Slower to build
+ -- Stored on disk
+
+- Views
+ -- Faster to build
+ -- Slower to query (If has complex calculation, gets worse and worse)
+ -- Query stored on db 
+
+- Ephemeral
+ -- Reusable 
+ -- Can not be queried
+ -- Not created on target DW
+
+- Incremental
+ -- Faster to build
+ -- First run, build table
+ -- After run, its incremental
+ -- Works with is_incremental() macro
+
+SELECT * FROM
+source('source','table_name')
+{% if is_incremental() %}
+WHERE loadtimestamp >= (SELECT MAX(loadtimestamp) from {{ this }})
+{% endif %}
+
+is_incremental retorna true when
+- Ja existe como tabela materializada no banco
+- --full-refresh flag nao eh passada. Se for passada, mas no config  ta como false, is incremental retorna verdadeiro mesmo assim
+
+Usa unique_key como config alem do materialized para usar outras estrategias incrementais (incremental_strategy)
+como merge, insert_overwrite, upsert
+
+on_schema_change era para evitar full_refresh quando schema change
+fail: se mudar da erro
+ignore: default (se adicionar novas colunas ou remover, nao vai aparecer)
+sync_all_columns: se mudar datatype, pode ser full scan depdendno do banco
+sync as coluas, adicionando e/ou removendo-as
+append_new_colums: se ttiver novas colunas, adiciona-se as 
+
+
+
+
+
+Git workflow
+
+
+ Incremental
+ - Faster to build 
+ - First run, build all table 
+ - After its incremental
+
+
+ incremental_strategy: merge, append, upsert, insert_overwrite
+
+ on_schema_change:
+ ignore 
+ fail 
+ sync_all_columns:
+ append_new_columns
+
+ Default behaviro eh ignore 
+ - se adicionarem ou removerem colu, dbt ta nem ai 
+ - se quiser novos dados ou novos shemas
+  tem append_new_columns que adiciona novos, syncl_all_ colums que adiciona novos e remove velhos
+   -- Depdendno do banco sync_all_columns faz table scan e nao incremental
+  fail da erro
 https://docs.getdbt.com/docs/build/materializations
 
 

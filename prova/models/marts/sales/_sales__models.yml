@@ -1,0 +1,15 @@
+models:
+  - name: sales
+    description: joined fact order
+    config:
+      enabled: true 
+      schema: analytics
+      full_refresh: false
+      tags: ['join']
+      meta:
+        owner: oselio
+        email: candido@outlook.com
+    tests:
+      - model_test:
+          config:
+            severity: warn

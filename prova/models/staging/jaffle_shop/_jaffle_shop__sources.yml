@@ -21,3 +21,12 @@ sources:
     tables:
       - name: products
         description: "{{ doc('source_jaffle_shop') }}"
+
+      - name: salesorder
+        description: source of salesorder table
+        identifier: salesorder
+
+      - name: people
+        description: source of salesorder table
+        identifier: salesperson
+

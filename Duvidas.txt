@@ -54,3 +54,126 @@
 
 #     #Qual deve ser o schema de producao para tables localizadas no schema "raw"? 
 #     #jaffle_shop, raw, o que??
+
+
+ONde fica tempo de build dos modelos? 
+-- Em qual artefato?
+-- Lembrar da questao do  run_results code errors e ver qual artefato tem dele
+
+
+# # version: 2
+
+# # models:
+# #   - name: target
+# #     description: "Relacionado a target table"
+# #     docs:
+# #       show: true 
+
+# #     materialized: view
+# #     schema: staging
+# #     alias: targets
+
+# #     contract:
+# #       enforced: false 
+
+# #     # constraints:
+# #     #   columns:
+# #     #   type:
+
+# #     # tests:
+# #     #   - Lembrar se pode ser teste singular aqui tb e como funciona seletor dele a nivel de singular e generico
+
+# #     tests:
+# #       - generic_model
+    
+
+    
+    
+# #     persist_docs:
+# #       relation: true
+# #       columns: true 
+
+
+# #     #Essa parte da documentacao relacionado a precedence order ta meio confuso
+# #     full_refresh: true 
+
+# #     #Entender pq isso aqui n ta funcionando!
+# #     pre-hook: "CREATE TABLE IF NOT EXISTS target_teste (i integer);"
+
+# #     columns:
+# #       - name: sk_target
+# #         description: primary key of target table 
+# #         tags: ['sk']
+# #         tests:
+# #           - unique
+# #           - not_null 
+# #           - bora_generic:
+# #               value: 802
+# #         meta:
+# #           chave: true 
+# #       - name: target
+# #         tests:
+# #           - unique:
+# #               config:
+# #                 enabled: true
+# #                 severity: 'warn'
+# #                 warn_if: '>40'
+
+
+# version: 2
+
+# models:
+#   - name: stg_product
+#     description: Products Information with color, unity price, category and subcategory
+#     config:
+#       enabled: true 
+
+#       database: postgres
+#       schema: staging
+#       alias: products
+
+#       #Testar eles quando for estudar somente eles
+#       pre-hook:
+#       post-hook:
+
+#       #Testar funcionamento exato com CLI e precendence order
+#       full_refresh: false
+      
+#       materialized: view
+#       #sql_header: 
+#       #grants:
+
+#       persist_docs: true
+#       contract:
+#         enforced: true
+
+#     constraints:
+#       - type: unique
+#         columns: ['sk_product']
+
+#       - type: check
+#         columns: ['category','subcategory']
+#         expression: "category != subcategory"
+#         name: constraint_product_category_subcategory
+
+#     tests:
+#       - generic_test_exemplo
+#       - singular_test (Na pratica talvez nem fa\a sentido) -> Testar se com dbt test --select model
+#        vai triiggar esse test singular automagicamente
+
+
+#     columns:
+#       - name: sk_product
+#         description: Surrogate key of product
+#         tests:
+#           - unique
+#           - not_null 
+#           - generic_column_test:
+#               argumento: valor
+#               config:
+               
+
+#         # Deixar pra onde realmente tem isso e testar!
+#         # constraints:
+#         #   - type: foreign_key
+#         #     expression: schema z.tabela e (coluna z)

@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: stg_jaffle_shop_products
+    description: Products Information with color, unity price, category and subcategory
+    config:
+      enabled: true 
+
+      schema: staging
+      alias: products
+
+      full_refresh: false
+  
+      materialized: view
+
+
+      persist_docs:
+        relation: true
+        columns: true
+   
+    columns:
+      - name: sk_product
+        description: Surrogate key of product
+        tests:
+          - unique
+          - not_null 
+          # - generic_column_test:
+          #     argumento: valor
+          #     config:
+          #       severity: error
+
+
+  - name: fact_sales_orders
+    description: fact orders
+    config:
+      enabled: true
+      materialized: table
+    columns:
+      - name: salesterritorykey
+        description: key of the territory in fact
+        quote: false
+        tags: ['pk']
+        tests:
+          - not_null
+          - unique
+
+  - name: fact_sales_orders_incremental
+    description: fact orders
+    config:
+      enabled: true
+      materialized: incremental
+      full_refresh: false
+    columns:
+      - name: salesterritorykey
+        description: key of the territory in fact
+        quote: false
+        tags: ['pk_incremental']
+        tests:
+          - not_null
+          - unique

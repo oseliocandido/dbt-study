@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_stripe_targets
+    description: "{{ doc('target_docs')}}"
+    config: 
+      enabled: true 
+    columns:
+      - name: employeeid
+        tests:
+          - relationships:
+              to: ref('stg_jaffle_shop_people')
+              field: employeeid
