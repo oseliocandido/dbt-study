@@ -5,29 +5,13 @@ models:
     description: Products Information with color, unity price, category and subcategory
     config:
       enabled: true 
-
-      schema: staging
-      alias: products
-
-      full_refresh: false
-  
       materialized: view
-
-
-      persist_docs:
-        relation: true
-        columns: true
-   
     columns:
       - name: sk_product
         description: Surrogate key of product
         tests:
           - unique
           - not_null 
-          # - generic_column_test:
-          #     argumento: valor
-          #     config:
-          #       severity: error
 
 
   - name: fact_sales_orders
@@ -43,6 +27,7 @@ models:
         tests:
           - not_null
           - unique
+
 
   - name: fact_sales_orders_incremental
     description: fact orders

@@ -14,3 +14,7 @@ sources:
                   value: 800
                   config: 
                     severity: error
+      - name: sales
+        description: finally sales tables
+        docs: 
+          show: true 

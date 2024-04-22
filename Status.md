@@ -93,6 +93,10 @@
 - Schema Tests (Generic Tests)
 - Singular Tests
 - Custom Generic Tests
+- source fresnness
 
-
+- Deployment tests, etc
 - dbt test to run it  on local dev or in production with dbt build generallty
+- Eager, Indirect, etc
+
+Source Fresnhess geralmente obivamente sao em jobs de producao
