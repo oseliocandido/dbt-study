@@ -1,5 +1,6 @@
 {% macro test_generic_model(model) %}
 
+
 WITH base  AS (
 
 SELECT COUNT(*)  as errors

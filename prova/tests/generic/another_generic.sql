@@ -4,11 +4,11 @@
     enabled=true,
     severity='error',
     warn_if='>2',
-    error_if='>9',
+    error_if='>8',
     tags=['generic'],
     store_failures=true,
-    schema='erro',
-    alias='data_error')
+    limit=20,
+    schema='erro')
     }}
 
 

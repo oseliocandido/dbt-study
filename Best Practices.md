@@ -111,3 +111,4 @@ https://docs.getdbt.com/reference/commands/build
 
 ## Duvidas
 - COmo usar tests de outros pacotes? Testar!
+- Estudar flags do dbt core

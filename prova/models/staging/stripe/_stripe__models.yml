@@ -5,9 +5,13 @@ models:
     description: "{{ doc('target_docs')}}"
     config: 
       enabled: true 
+    tests:  
+      - nice
+      - generic_model
     columns:
       - name: employeeid
         tests:
           - relationships:
               to: ref('stg_jaffle_shop_people')
               field: employeeid
+      

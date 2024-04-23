@@ -5,9 +5,11 @@
 - Jinja, Macros, Packages
 - Analysis and Seeds
 - Webhooks
+- Advanced Testing
+
 
 ## Watching 
-- Advanced Testing
+
 
 # Missings (Ver se falta mais)
 - Advaced Deployemnt with dbt Cloud
@@ -100,3 +102,55 @@
 - Eager, Indirect, etc
 
 Source Fresnhess geralmente obivamente sao em jobs de producao
+
+
+Tests Precedence in Generic Tests
+1.  dbt_project.yml
+2.  config of generic test
+3.  yaml config
+
+
+
+Integration tests
+
+Da pra usar dbt run-operation --args
+- Estudar flags
+
+Development Ad-hoc with dbt test
+CI CD test before PR creation
+
+- Testar PR Schema com dbt Cloud
+
+Em production se teste falha, manda slack, email ou algo pra dizer que deu ruim algo
+
+PULL requests - Se falhar n da pra dar merge, se der bom da pra dar mege
+- dbt build --models state:modified+ (Olha no manifest.json do branch que que fazer merge e do ultimo production sucessfull )
+
+
+Tests in QA branch
+(Reler Branch Strategies)
+https://docs.getdbt.com/docs/deploy/continuous-integration
+
+
+Models, seeds, snapshots e tests tem run_results 
+sucess, error, skipped, fail, warn pass
+
+When to test
+- When to test
+There are 4 major points in time when you should consider testing your code
+
+In development, it is critical to test your changes to modeling logic while you make changes. This can help individual developers find bugs before opening a pull request.
+
+In production, it is important to continue testing your code to catch failures when they happen. This can empower the data team to catch data quality issues well before stakeholders are impacted.
+
+When proposing changes / opening a pull or merge request, we can run automated tests against our proposed changes to catch any issues that may not have been caught in the development cycle mentioned above.
+
+On a middle / qa branch, it can be helpful to test a batch of changes that have been made in an isolated testing environment before then merging the code to the main / production branch.
+
+-----------------------
+No bbt build se error tiver com severidade warn ele da warn mas n da skill nos modelos downstgream, continuinaod processo
+de build (run e test)
+
+The --resource-type and --exclude-resource-type flags include or exclude resource types (such as unit tests) from the dbt run, dbt build, and dbt clone commands
+
+dbt_test__audit

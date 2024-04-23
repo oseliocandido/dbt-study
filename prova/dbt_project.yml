@@ -45,3 +45,13 @@ snapshots:
     +target_database: postgres
     +target_schema: snapshotzim
     +unique_key: sk_target
+
+
+tests:
+  prova:
+    +limit: 100
+    +store_failures: true 
+    +severity: error
+    # database: postgres
+    # schema: only_errors
+    #where:

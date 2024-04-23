@@ -9,5 +9,5 @@ snapshots:
           - bora_generic:
               value: 20
               config:
-                severity: warn
-                store_failures: false
+                severity: error
+                store_failures: true

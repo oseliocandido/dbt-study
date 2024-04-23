@@ -7,9 +7,9 @@ models:
       full_refresh: false
       tags: ['join']
       meta:
-        owner: oselio
+        owner: oseliocandidopererira
         email: candido@outlook.com
     tests:
       - model_test:
           config:
-            severity: warn
+            severity: error

@@ -11,9 +11,9 @@ sources:
           - name: sk_target
             tests:
               - bora_generic:
-                  value: 800
-                  config: 
-                    severity: error
+                  value: 850
+
+
       - name: sales
         description: finally sales tables
         docs: 
