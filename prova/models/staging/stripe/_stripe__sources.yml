@@ -13,6 +13,5 @@ sources:
               - bora_generic:
                   value: 850
 
-
       - name: sales
         description: finally sales tables

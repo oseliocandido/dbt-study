@@ -22,7 +22,6 @@ models:
     columns:
       - name: salesterritorykey
         description: key of the territory in fact
-        quote: false
         tags: ['pk']
         tests:
           - not_null
@@ -38,7 +37,6 @@ models:
     columns:
       - name: salesterritorykey
         description: key of the territory in fact
-        quote: false
         tags: ['pk_incremental']
         tests:
           - not_null
