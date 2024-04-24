@@ -6,7 +6,6 @@ seeds:
     config:
       enabled: true 
       alias: data_alias
-      quote_columns: false
       fulll_refresh: false
 
       tags: ['seed']
