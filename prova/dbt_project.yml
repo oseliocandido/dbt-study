@@ -12,7 +12,7 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-#docs-paths: ["docs"]
+
 
 
 target-path: target
@@ -52,6 +52,3 @@ tests:
     +limit: 100
     +store_failures: true 
     +severity: error
-    # database: postgres
-    # schema: only_errors
-    #where:

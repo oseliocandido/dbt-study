@@ -29,4 +29,3 @@ sources:
       - name: people
         description: source of salesorder table
         identifier: salesperson
-

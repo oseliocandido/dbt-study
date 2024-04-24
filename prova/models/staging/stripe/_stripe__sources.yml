@@ -16,5 +16,3 @@ sources:
 
       - name: sales
         description: finally sales tables
-        docs: 
-          show: true 
