@@ -5,17 +5,7 @@ seeds:
     description: static data from seed file
     config:
       enabled: true 
-      #database: a
-      schema: custom
       alias: data_alias
-      # tests:
-      #   - eita kkk
-      # pre-hook: 
-      # post-hook:
-
-      # column_types:
-      #   columna: 
-      #   columnb:
       quote_columns: false
       fulll_refresh: false
 
@@ -23,3 +13,4 @@ seeds:
       persist_docs: 
         columns: true 
         relation: true
+  

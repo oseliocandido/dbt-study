@@ -3,7 +3,6 @@ models:
     description: joined fact order
     config:
       enabled: true 
-      schema: analytics
       full_refresh: false
       tags: ['join']
       meta:
