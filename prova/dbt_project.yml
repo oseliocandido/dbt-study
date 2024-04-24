@@ -42,7 +42,6 @@ seeds:
 
 snapshots: 
   prova:
-    +target_database: postgres
     +target_schema: snapshotzim
     +unique_key: sk_target
 
