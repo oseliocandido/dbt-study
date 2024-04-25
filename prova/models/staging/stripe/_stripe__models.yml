@@ -14,4 +14,4 @@ models:
           - relationships:
               to: ref('stg_jaffle_shop_people')
               field: employeeid
-      
+          - unique
