@@ -26,6 +26,15 @@ sources:
         description: source of salesorder table
         identifier: salesorder
 
+        freshness: 
+          warn_after:
+            count: 15
+            period: day
+          error_after:
+            count: 25
+            period: day
+        
+
       - name: people
         description: source of salesorder table
         identifier: salesperson
