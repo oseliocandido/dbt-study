@@ -28,10 +28,10 @@ sources:
 
         freshness: 
           warn_after:
-            count: 15
+            count: 5
             period: day
           error_after:
-            count: 25
+            count: 7
             period: day
         
 
