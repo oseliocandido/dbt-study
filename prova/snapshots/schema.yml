@@ -10,4 +10,4 @@ snapshots:
               value: 20
               config:
                 severity: error
-                store_failures: true
+                store_failures: false
