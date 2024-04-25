@@ -6,6 +6,7 @@ models:
     config:
       enabled: true 
       materialized: view
+      full_refresh: false
     columns:
       - name: sk_product
         description: Surrogate key of product
