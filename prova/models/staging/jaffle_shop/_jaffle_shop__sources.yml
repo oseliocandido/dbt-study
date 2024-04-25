@@ -9,8 +9,8 @@ sources:
     loaded_at_field: loadtimestamp
 
     freshness:
-      warn_after: {count: 2, period: day}
-      error_after: {count: 2, period: day}
+      warn_after: {count: 30, period: day}
+      error_after: {count: 45, period: day}
 
     meta:
       contains_pii: true
@@ -28,10 +28,10 @@ sources:
 
         freshness: 
           warn_after:
-            count: 2
+            count: 30
             period: day
           error_after:
-            count: 2
+            count: 45
             period: day
         
 
