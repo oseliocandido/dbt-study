@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_jaffle_shop_products
-    description: Products Information with color, unity price, category and subcategory
+    description: Products are really nice
     config:
       enabled: true 
       materialized: view

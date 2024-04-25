@@ -190,4 +190,8 @@ Source Fresnhess
  ai compara as data e faz o fresher
 
 
- CI CD
+ CI CD Job
+
+(On Pull Resquest)
+ dbt build --select "state:modified+" --state ./lets
+ PR Schema
