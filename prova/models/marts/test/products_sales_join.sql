@@ -2,7 +2,7 @@ SELECT
   sales.salesordernumber, 
   sales.quantity, 
   sales.unitprice, 
-  sales."cost", 
+  sales.cost, 
   products.productkey,
   products.product, 
   products.standardcost, 

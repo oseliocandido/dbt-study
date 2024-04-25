@@ -32,11 +32,25 @@
    --- Cada user tem somente um dev enviroment
    --- Target schema geralmetne dbt_username
    --- Coloca-se credenciais do user relacionado ao DW
-
+   --- Connection details
+      --- target.schema 
+      --- target.name
+      --- target.threads
+      --- Enviroment variables
+      --- dbt version
 
 
   --- Deployment
      ---- Tem um SA exclusivo para prod com permissoes necessarias
+     ---- target.schema
+
+
+    ---- Jobs
+          commands
+          generate docs on run
+          gerenate docs source fresness
+          target.nname
+          target.threads
 
 
 
