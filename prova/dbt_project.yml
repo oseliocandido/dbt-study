@@ -12,8 +12,6 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-#docs-paths: ["docs"]
-
 
 target-path: target
 log-path: logs 
@@ -22,8 +20,6 @@ log-path: logs
 clean-targets:        
   - "target"
   - "dbt_packages"
-
-# vars:
 
 
 models:
@@ -42,7 +38,6 @@ seeds:
 
 snapshots: 
   prova:
-    +target_database: postgres
     +target_schema: snapshotzim
     +unique_key: sk_target
 
@@ -52,6 +47,3 @@ tests:
     +limit: 100
     +store_failures: true 
     +severity: error
-    # database: postgres
-    # schema: only_errors
-    #where:

@@ -24,6 +24,36 @@
 
 
 ## Advacend Deployment
+- Enviromments
+-- Tem nele dbt version e de onde vai ser a branch source que sera desenvolvida em cima
+
+-- Dois tipos: 
+  --- Dev:
+   --- Cada user tem somente um dev enviroment
+   --- Target schema geralmetne dbt_username
+   --- Coloca-se credenciais do user relacionado ao DW
+
+
+
+  --- Deployment
+     ---- Tem um SA exclusivo para prod com permissoes necessarias
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - Testar todo codigo na plataforma e ler novamente documentacao
  -- Enviroments Variable
    --- Precendece Order (Workflow, etc)
