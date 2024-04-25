@@ -39,3 +39,11 @@ sources:
         description: source of salesorder table
         identifier: salesperson
 
+        freshness: 
+          warn_after:
+            count: 1
+            period: minute
+          error_after:
+            count: 2
+            period: minute
+        
