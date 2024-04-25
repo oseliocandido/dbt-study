@@ -28,11 +28,11 @@ sources:
 
         freshness: 
           warn_after:
-            count: 30
-            period: day
+            count: 1
+            period: minute
           error_after:
-            count: 45
-            period: day
+            count: 1
+            period: minute
         
 
       - name: people
