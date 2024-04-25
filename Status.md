@@ -25,46 +25,82 @@
 
 ## Advacend Deployment
 - Enviromments
--- Tem nele dbt version e de onde vai ser a branch source que sera desenvolvida em cima
+ -- dbt version
+ -- git branch default
+ -- target.schema
 
--- Dois tipos: 
-  --- Dev:
-   --- Cada user tem somente um dev enviroment
-   --- Target schema geralmetne dbt_username
-   --- Coloca-se credenciais do user relacionado ao DW
-   --- Connection details
+
+ -- Dev:
+  --- Dev Enviroment 
+    --- Default Branch
+    --- dbt version
+    --- Each user with only on dev enviroment related to own credentiais
+      --- Env Variables
       --- target.schema 
       --- target.name
       --- target.threads
-      --- Enviroment variables
-      --- dbt version
-
-
+ 
   --- Deployment
+     ---- Multiple Deploy Env
+     ---- Env Variables
      ---- Tem um SA exclusivo para prod com permissoes necessarias
      ---- target.schema
 
 
-    ---- Jobs
-          commands
-          generate docs on run
-          gerenate docs source fresness
-          target.nname
-          target.threads
+  -- Jobs
+    -- Commands
+    -- Source Freshness
+    -- Docs on end
+    -- Sequence Events
+      -- Clone git repo
+      -- DW connection
+      -- dbt deps
+      -- Source Freshness if enabled
+      -- Commands
+      -- Geneate DOcs if enabled
+    -- target.name
+    -- target.threads
+    -- Env Variables
+     
+    -- Api, Schedule, Trigger
+
+Precedece Env Variable Order
+- Personal Override - Job
+- Env Enviroment Variable
+- Project Default
+- Default Value of {{env_var('DBT_NICE','default')}}
+
+Straegies Deployment
+dbt build daily (approximate true)
+dbt build --full-refresh every sunday (reliable true!)
 
 
+Prod Env
+- Emails-Notifications if fail 
+- Webhooks Usage
+- Schema Analytics with SA dedicated to use it
+
+------------------------------------------------------------------------------------
+Architectures
+
+Trunk Strategies Workflow
+- Dev -> Prod (One Trunk)
+ -- Features from git pull from main branch
+ -- Switch to new branch
+ -- Dev new features
+ -- Commit them
+ -- Push to remote
+ -- Open pull request  
+    -- Before opening pull request, its possible to use github actions to when pusshed with
+      --- dbt build --select "state:modified+" apenas dbt run e test apenas nos modelos que estao diferentes do ultimo
+      sucessfull run usando-se  manifest,sjon
+ -- Merge 
 
 
+- Dev -> QA -> Prod (Many Trunks)
+-
 
-
-
-
-
-
-
-
-
-
+------------------------------------------------------------------------------------
 
 
 
