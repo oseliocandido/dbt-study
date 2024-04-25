@@ -28,22 +28,23 @@ sources:
 
         freshness: 
           warn_after:
-            count: 1
-            period: minute
+            count: 30
+            period: day
           error_after:
-            count: 1
-            period: minute
+            count: 45
+            period: day
         
 
       - name: people
         description: source of salesorder table
         identifier: salesperson
 
-        freshness: 
+        freshness:
           warn_after:
-            count: 1
-            period: minute
+            count: 30
+            period: day
           error_after:
-            count: 2
-            period: minute
-        
+            count: 45
+            period: day
+
+          
