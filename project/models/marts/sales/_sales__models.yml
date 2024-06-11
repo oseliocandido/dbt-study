@@ -1,0 +1,14 @@
+models:
+  - name: joined_fact_sales
+    description: joined fact order
+    config:
+      enabled: true 
+      full_refresh: false
+      tags: ['join']
+      meta:
+        owner: oseliocandidopererira
+        email: candido@outlook.com
+    columns:
+      - name: sk_sales
+        tests: 
+          - not_null

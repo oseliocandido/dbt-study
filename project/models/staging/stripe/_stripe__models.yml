@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_stripe_targets
+    description: "{{ doc('target_docs')}}"
+    config: 
+      enabled: true 
+      tags: ['tag01']
+    tests:  
+      - nice
+      - generic_model
+    columns:
+      - name: employeeid
+        tests:
+          - relationships:
+              to: ref('stg_jaffle_shop_people')
+              field: employeeid
+          - unique
+
+  - name: stg_stripe_sales

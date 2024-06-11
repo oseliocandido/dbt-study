@@ -1,0 +1,759 @@
+Resources Properties / Config
+models:
+  - name: mais uma tabela
+    description: text or docs block
+    docs:
+      show: true 
+    config:
+      enabled: true 
+      sql_header:  start of the transaction
+      materialized: table, view, incremental, ephemeral
+      contract:
+        enforced: true
+      pre-hook: before running this model
+      post-hook: after running this model
+      database: generate_database_name macro work
+      schema: generate_schema_name macro work
+      alias: final name in relation 
+      meta:
+        nice: 'day'
+        owner: 'jesus'
+      tags: ['a', 'b','c']
+      full_refresh: false
+      grants: 
+        +select: ['a','b']
+        role: principal
+    tests:
+      - singular_test
+      - custom_generic_test 
+    constraints:
+      - type: not_null, unique, primary_key, foreign_key, custom, check
+        columns:
+        name:
+        expression:
+    columns:
+      - name:
+        description:
+        meta:
+        tags:
+        data_type: 
+        constraints:
+          - type: foreign_key 
+            expression: schema.table (coluna z)
+        quote: true
+---------------------------------------------------------------------------------------------------------------------------------------
+exposures:
+  - name: powerbi
+    description: bi muito massa 
+    label: nicebi 
+    type: ['dashboard','analysis','notebook','ml','applicaiton']
+    maturity: low, medium, high
+    url: url
+    tags: ['a','b']
+    meta:
+      pii: True
+      department: finances
+    depends_on:
+      - source('source_name','nice_day')
+      - ref('teste')
+    owner:
+      name:
+      email:
+---------------------------------------------------------------------------------------------------------------------------------------
+snapshots:
+  - name:
+    description:
+    config:
+      enabled: 
+      meta:
+      tags:
+      target_schema: prod
+      target_database: prod_database
+      strategy: timestamp, check
+      updated_at:
+      check_cols:
+      unique_key:
+---------------------------------------------------------------------------------------------------------------------------------------
+seeds:
+  - name: testando
+    description: mais uma seed simples
+    config:
+      enabled: true 
+      column_types:
+      delimiter:
+      quote_columns:
+      database:
+      schema:
+      alias:
+      persist_docs:
+        relation: true 
+        columns: true 
+      pre-hook:
+      post-hook:
+      full_refresh: 
+      meta:
+      tags:
+      grants:
+    tests:
+---------------------------------------------------------------------------------------------------------------------------------------
+tests:
+  config:
+    store_failures:
+    database:
+    schema:
+    alias:
+    where:
+    limit:
+    warn_if:
+    error_if:
+    fail_calc:
+---------------------------------------------------------------------------------------------------------------------------------------
+Models:
+- Sao materializados como default as view
+- Ficam em models directory
+- Buildados com dbt run, dbt build
+---------------------------------------------------------------------------------------------------------------------------------------
+Seeds:
+- Csvs version controlled
+- Unchanged frequent data
+- Materialized as table
+- Small data (Static Data)
+---------------------------------------------------------------------------------------------------------------------------------------
+packages.yml:
+  packages:
+    - package: dbt-utils/teste
+      version: 0.3.0
+      git: https git
+      revision: tag (release), commit, branch
+---------------------------------------------------------------------------------------------------------------------------------------
+Tests:
+- Custom Generic Tests
+- Out-of-box Generic Tetsts (Old Schema Tests)
+- Singular Tests
+ -- .sql files on tests folder
+ --  Specific Business Logic related to one or more nodes
+- Assertions sao premissas que se espera
+ -- Exemplo assert_is_positive, espera-se que seja positivo, ai no teste tem-se query que  retorna justamente os negativos
+- dbt_test__audit__generic-test/singulartest
+
+Tests Precedence in Generic Tests
+1.  dbt_project.yml
+2.  config of generic test
+3.  yaml config
+
+Test Best Practices Usage
+- Development -> Test your changes to modeling logic while you make changes. 
+                 Find bugs before opening a pull request.
+
+- Pull Request CI/CD Hook -> Automated tests against proposed changes to 
+                             catch any issues that may not have been caught in the development cycle.
+
+- Production -> Catch failures when they happen in prod. Sends notifications, email que deu ruim
+                before stakeholders are impacted.
+
+- QA Branch -> CI CD approach that will get slim ci cd changes before go to prod in separate enviroment 
+---------------------------------------------------------------------------------------------------------------------------------------
+Exposures:
+- Obrigatorio eh owner, type, name
+---------------------------------------------------------------------------------------------------------------------------------------
+Snapshots:
+- Sempre selecionar todas as colunas
+- Obrigatorio target_schema, strategy and unique_key
+- target_database = Default eh target.database,se passavado um novo eh overwrite por cima
+- Invalidate hard deletes eh falso por default e se for true ele coloca valores que n existem mais como dbt_valid_to = current_timestamp 
+- Fazer joins downstream
+- Permissoes especiais nesse schema onde tem snapshots pra ser acessado mesmo objeto por diferentes usuarios
+- SCD TYPE 2
+- check -> check_cols
+- timestamp -> update_at
+- Schema dar overwrite, mas pode ser personalizadao com "{{generate_schema_name('nice')}}"
+- Nova colunas sao refletidas no snapshot. Colunas removidas tb permanecem
+- Gera 4 campos de metadados 
+ -- dbt_valid_to
+ -- dbt_valid_from
+ -- dbt_updated_at
+ -- dbt_scd_id
+
+- Timestamp Strategy
+ -- First Snapshot -> dbt_valid_from = update_at column and dbt_valid_to = NULL
+ -- Em diante
+    -- dbt_valid_to = novo valor do updated_at no registro antigo e NUll no novo
+    -- dbt_valid_from = nova linha com novo valor de update_at 
+    -- dbt_updated_at = dbt_valid_from
+    -- Nunca aparece current_timestamp (More reliable)
+
+- Check Strategy (Somente colunas referenciadas)
+ -- First Snapshot -> dbt_valid_from = current_timestamp and dbt_valid_to = NULL
+ -- Em diante
+    -- dbt_valid_to = current_timestamp
+    -- dbt_valid_from = current_timestamp
+    -- dbt_updated_at = dbt_valid_from
+---------------------------------------------------------------------------------------------------------------------------------------
+Analyses:
+- Version Controlled
+- .sql files  
+- Analyses Folder
+- Support Jinja
+- dbt compile
+---------------------------------------------------------------------------------------------------------------------------------------
+Macros:
+- Arquivos sql
+- Jinja Templaiting to make DRY
+- Create resusable code to be used on hooks for example
+- Can be used to generate_schema_name overrride and to write custom generic tests
+- Pode usar documentacao nele com schema.yml
+---------------------------------------------------------------------------------------------------------------------------------------
+Sources:
+- Source Fresnhess para gerar source.json
+- Possui referencias as sources de todos os objetos que serao transformados- Principais sao sources -name, tables, description, loaded_at_field, schema,database, fresnhess, warn_after and error_after, filter
+- Artefato comparado com ultimo artefato do job / ambiente com sucesso
+  -- Se der status ok na hora que roda, compara max_loaded_at do artefato atual com max_loaded_at do ultimo
+    ---- Se maior, roda
+    ---- Se nao, nao roda
+    ---- Esse caso fala-se do dbt build --select source_status-fresher+
+---------------------------------------------------------------------------------------------------------------------------------------
+Documentation:
+- Gerado com dbt docs generate e serve-se o site com dbt docs serve
+- Asset-paths
+ -- Com dbt docs generate, os assests dessa pasta sao copiados para diretorio target
+- Esse dbt docs generate gera catalog.json, index.html, copia os assets e tb gera manifest.json
+ -- Note manifest json eh gerado por qualquer comandop que faz parse menos
+   --- dbt deps, dbt clean, dbt debug, dbt init
+- Usa-se macro {% docs nice_doc %} pra criar markdown description e usa-se ele no yaml com "{{'doc(nice_doc)'}}"
+- Tem-se macro pra {% docs __overview__ %} pra mostrar pagina inicial do docs ou usando-se nome do projeto/pacote
+- docs-show- true -> Usado para model, sources, snapshots, macros, seeds, analysis
+---------------------------------------------------------------------------------------------------------------------------------------
+Grants:
+- Antigamente era feito com post-hook
+- Agora eh feito com grants privilege-principal
+- Aplica-se a model, seed, snapshot
+- Privilege and grantee
+- +select- jose (Evita merge and clober behavior)
+  - https://docs.getdbt.com/reference/resource-configs/grants
+---------------------------------------------------------------------------------------------------------------------------------------
+Jinja Templating Language:
+- Dry Principle (Reusable)
+- Importante para macros em geral e principalmente uso da {{ref e source e config}}
+- Importantes Functions 
+ -- set
+ -- for
+ -- if, elif, else
+ -- do
+ -- log
+ -- run_query
+ -- execute
+ -- ~ (Concatenation)
+ -- print
+---------------------------------------------------------------------------------------------------------------------------------------
+Packages: 
+- https://docs.getdbt.com/docs/build/packages
+- Instala-se pacote com dbt deps
+- packages-install-path
+- Diretorio fica em packages-install-path em dbt_project.yml 
+ -- Default eh dbt_packages
+- Boa pratica eh sempre pegar latest patch of minor version
+- Usa-se geralmente env variable DBT_ENV_SECRET, pois
+  -- Nao aparece no logs
+  -- Jinja so da parse nela em packages.yml e em profiles.yml
+  -- bom pra usar os tokens
+---------------------------------------------------------------------------------------------------------------------------------------
+Enviroment Variables:
+- Precedence Order
+ -- Personal Overwirde / Job
+ -- Enviroment itself
+ -- Project Default
+ -- Default value
+---------------------------------------------------------------------------------------------------------------------------------------
+Materializations:
+- Start with view. Se query demora demais, vai pra table. Se build demora demis, incremental.
+- Staging as views, marts as table, incremental
+- View, Ephemeral, Table,  Incremental
+
+- Views (Staging Models)
+ -- Fastest to build
+ -- Slowest to query mainly if has complex transformations
+ -- Only logic in DW
+ -- Most up-to-date data
+ -- Small data with near realtime data
+
+- Ephemeral (Intermediate models)
+ -- Reusable 
+ -- Can not be queried making harder to throubleshooting
+ -- Not created on target DW
+
+- Tables
+ -- Faster to query, slower to build
+ -- Stored on disk
+ -- Used by end-users
+ -- Uses storage in DW
+ -- Great to compute intensive
+
+-- Incremental
+ -- Faster to build
+ -- First run, build entire table
+ -- After run, its incremental
+ -- Works with is_incremental() macro
+ -- Faster to build than tables
+ -- Used by end-users
+ -- Uses storage in DW
+ -- Saves compute usage when queried because parttions usage
+ -- Compute only delta avoid waste of resources mainly with expensive compute usage
+ -- More complex 
+ -- Aprooximate true
+ -- SELECT * FROM source('source','table_name')
+
+    {% if is_incremental() %}
+      WHERE loadtimestamp >= (SELECT MAX(loadtimestamp) from {{ this }})
+    {% endif %}
+
+    --- Avalia true se
+       --- materialized as incremental
+       --- tabela que ja existe no DW
+       --- sem flag --full-refresh
+
+  -- unique_key altera comportamento de mutaveis tables com diferentes novas estrategias
+    --- incrementa_strategies -> append (default), merge, insert_overwrite, delete+insert
+  -- on_schema_change 
+     -- ignore -> Default = Nao adiciona nem remove novas colunas
+     -- fail -> Se mudar schema -> da fail
+     -- append_new_columns -> Apenda as novas
+     -- sync_all_columns -> Apenas as novas e remove as velhas (No BQ, alterar datatype faz dar full-refresh)
+---------------------------------------------------------------------------------------------------------------------------------------
+Hooks:
+- Sao usados no dbt_project.yml, config blocks and yamls dos resources
+- pre-hook and post-hook
+- ROda antes e dps do build dos objetos em models, seeds, snapshots
+- Precedence Order
+ -- Pacotes Dependentes
+ -- Pacote Ativo
+ -- Dbt_project.yml
+ -- Yaml
+ -- Ordem que sao definidos
+---------------------------------------------------------------------------------------------------------------------------------------
+Variables:
+- Usados no contexto geral do projeto(package) ou ainda no contexto geral dos projetos
+- Pode ser usado em
+ -- Models
+ -- Hooks
+ -- Macros
+- Precedence Order 
+ 1 CLI ARGS 
+ 2 Escopo Local
+ 3 Escopo Global
+ 4 Default Variable
+
+dbt run --vars '{chave:valor}'
+
+ {{ var('variablez') }}
+---------------------------------------------------------------------------------------------------------------------------------------
+dbt run-operation --args 'dict'
+dbt run --vars 'dict'
+---------------------------------------------------------------------------------------------------------------------------------------
+Webooks:
+- Outgoing webhooks with METHOD post to external integrated tools
+- Job Status (Error, Start, Completed)
+---------------------------------------------------------------------------------------------------------------------------------------
+Data Contracts:
+- Usados em modelos para evitar entrar data_types que nao sao de acordo com schema definido
+- contract-enforced-true
+- So funciona para table e incremental
+- A nivel de modelo e a nivel de coluna
+- 5 tipos basicos
+ -- not_null
+ -- unique
+ -- primary_key
+ -- foreign_Key
+ -- custom (expression)
+ -- check (expression)
+- constraints -> type,columns, expression, name
+---------------------------------------------------------------------------------------------------------------------------------------
+dbt build:
+- Roda models, seeds, snapshots, tests
+
+- Principais flags usadas 
+ --fail-fast
+ --select state-modfied+
+ --select source_status-fresher+
+ --full-refresh
+ --store-failures (Confirmar essa aqui)
+
+- Se teste falhar, skipa run/tests associados ao modelos downstream que o utilizam
+- Se severidade for warn, ele nao skipa e continua processso downstream que o utilizam
+---------------------------------------------------------------------------------------------------------------------------------------
+Enviroments, Target Varible, CI CD, Architecture:
+- Target
+ -- Target Variable sao usados para controlar comportamento do codigo em diferentes ambientes
+ -- Mais importantes sao
+    {{target.name}} = Definido a nivel de job / personal 
+    {{target.schema}} = Definidio a nivel de ambiente
+    {{target.threads}} = Definidio a nivel de job / personal 
+ -- Customizado via jinja geralmente
+
+- Enviromnent Variables
+ -- Sao variaveis definidas em varios nivels que controlam comportamento do codigo em diferente ambientes
+ -- Setados em diversos ambientes com seguinte ordem de precedencia do maior para menor
+  1. Personal Override / Job Override
+  2. Deployment Env / Personal Env
+  3. Project Default
+  4. Default value from jinja (If all fail, throw compilation error)
+ -- Sempre em UPPERCASE com nome DBT_ 
+ -- Quando usado DBT_ENV_SECRET_
+   -- Nao vai aparecer no logs
+   -- A nivel de dbt core, nao fica disponivel em dbt_project.yml, mas fica a nivel de package e profiles.yml
+   -- Mais usado ele para fazer clone de repo onde se pega os tokens de repo privados
+
+- Enviromnent
+ -- Existem dois ambientes basicamente -> Dev e Deployment
+ -- No ambiente seta-se
+    --- dbt version
+    --- branch 
+        ---- se for dev, de onde vai ser criado a nova branch
+    --- target.schema
+
+  -- DEV
+     --- A nivel de usuario, coloca-se as credenciais de conexao com
+         ---- target.name
+         ---- target.schema
+         ---- target.threads
+
+  -- Deployment
+     --- target.schema -> Em qual schema vai rodar pipeline
+     --- branch or custom branch -> De qual branch vai pipeline
+     --- dbt version -> Qual versao do dbt vai ser rodado
+     --- SA especifico com permissoes necessarias 
+
+  -- Jobs
+     --- Sequence Order 
+         ---- git clone 
+         ---- connect to DW
+         ---- dps deps
+         ---- dbt source freshness (Se enabled e se der fail -> Nao vai dar error e abortar no dbt Cloud CLI)
+         ---- dbt command 1
+         ---- dbt command 2
+         ---- dbt docs generate (Se enabled -> Cria documentacao que esta atrelada ao job)
+     --- Defer
+         ---- Equivalente a dbt command state modified+ or dbt command source_status fresher+
+         ---- Ambos comandos pegam o ultimo job que rodou com sucesso (seja ele mesmo self selected ou qualquer um do ambiente)
+              que contenha o artefato referenciado em questao e roda comando 
+     --- Parameters
+         ---- target.name
+         ---- target.threads
+         ---- Deferral
+         ---- Timeout 
+         ---- Schedule
+         ---- Env Variables
+         ---- Acionado via API tambem 
+     --- Artefatos
+         ---- A nivel do job ou ambiente
+         ---- Principais sao
+              ----- sources.json
+              ----- manifest.json
+              ----- run_results.json
+              ----- catalog.json
+
+ - CI/CD
+  -- Normal
+    -- Na hora de fazer push da branch com github actions, pode ter dbt compile, dbt test, dbt build pra ver se compila e test da certo
+    -- Na hora de abrir PR, pode ter dbt compile, dbt test, dbt build pra ver se compila e test da certo
+      --- PR_SCHEMA (DBT Cloud)
+
+  -- Slim 
+    -- dbt command --select 'state:modfied+', ai so pega o que mudou desde ultimo manifest.json de job com sucesso e roda ele e downstream 
+    apenas dos objetos que foram alterados
+    -- Reduz compute, storage e consequemente custos
+---------------------------------------------------------------------------------------------------------------------------------------
+Jobs Scheduling:
+- Standard
+  - Command -> dbt build
+  - Schedule -> daily
+
+- Full Refresh 
+  - Command -> dbt build --full-refresh
+  - Schedule -> weekly
+
+- Time Sensitive (Speific to business/department)
+  - Command -> dbt build --select package.folder-department-xyz.subfolderabc
+  - Schedule -> Custom
+
+- Fresh Rebuild 
+  - Command -> dbt build --select source_status-fresher+ --select package.folder-department-xyz.subfolderabc
+  - Schedule -> Custom
+
+Types
+- One Off (Approach Based)
+  - Frequency Tags
+  - Exposure Based
+  - Source Fresnhess Based
+  - Folder Structure
+
+- Unified
+  - Evitar dar build em comandos separados cujos nodes sao buildados duas vezes
+  - A fim de resolver tal problema, usa-se graph, union, intersection and outros metodos
+---------------------------------------------------------------------------------------------------------------------------------------
+Architecture Strategies:
+ - Branch Strategies (Depende como a empresa seta CI CD geralmente nos pipelines dela)
+   -- One Trunk (Dev -> Prod)
+     --- Dev Initial Branch vem direto da main
+     --- Dev e Prod Ambientes Apenas
+     --- Branch do target eh main ou uma default e schmema eh de producao mesmo
+
+   -- Many Trunk (Dev -> QA -> Prod)
+     --- Dev Initial Branch vem do QA
+     --- Dev, QA e Prod ambientes
+     --- QA o target eh analytics_qa e branch target eh qa mesmo
+     --- Demora mais, mas dados de maior qualidade
+---------------------------------------------------------------------------------------------------------------------------------------
+Git Worflow:
+- Dev -> Prod 
+ -- Features from git pull from main branch
+ -- Switch to new branch
+ -- Dev new features
+ -- Commit them
+ -- Push to remote
+ -- Open pull request  
+    -- Before opening pull request, its possible to use github actions to when pusshed with
+      --- dbt build --select "state:modified+" apenas dbt run e test apenas nos modelos que estao diferentes do ultimo
+      sucessfull run usando-se  manifest.sjon
+ -- Merge and delete ft branch
+---------------------------------------------------------------------------------------------------------------------------------------
+Run Results Codes Status Table:
+- models, seeds, tests, snapshots tem esses condigos
+- Usados com result:error+, etc
+- 5 valores sao
+  -- success
+  -- error
+  -- skip
+  -- fail
+  -- warn
+  -- pass
+  
+- Seeds -> error, success
+- Models -> error, success, skip
+- Tests -> error, skip, pass, warn, fail
+- Snapshots -> error, success, skip
+---------------------------------------------------------------------------------------------------------------------------------------
+Best Practices:
+Refactoring to Modularity
+- Migrate Legacy Code
+- Translate Hard Code References with (Sources with 1:1)
+- Refactoring Strategy
+- Costmetic Cleanup and CTE Gropuing
+ -- Import CTE
+ -- Logical CTE
+ -- Final CTE
+- Split into Models
+ -- Staging
+ -- Intermediate
+ -- Final
+
+
+Folder Structure
+ -- Staging
+    --- Subfolders are source systems (Source Conformed)
+    --- Materialized as views for fast build and users will not query them
+       ---- Freshed data to be used down stream
+       ---- Avoid uncessary storage cost usage
+    --- 1:1 from source tables
+    --- Simple Transformations (Renaming, cast type, filter, Categorization)
+    --- No joins and no aggregations
+    --- Source Conformed
+    --- Files
+       --- stg_jaffle_shop__orders.sql
+       --- _jaffle_shop__sources.yml
+       --- _jaffle_shop__models.yml
+       --- _jaffle_shop__docs.md
+    --- Subfolder is source system
+    --- dbt build --select staging.stripe+
+
+ -- Intermediate
+    --- Subfolders are departament (Business Conformed)
+    --- Files
+       --- int_payments_pivoted_to_orders.sql
+    --- Custom Schemas with special permissions to be queried by users
+    --- Materialized as ephemeral
+        ---- Will not be loaded in target DW
+    ---- Materialized as views
+        ---- Using custom schemas with specials permissions
+
+ -- Marts
+    --- Subfolders are departament
+    --- Materialized as table/incremental (Faster to query)
+    --- Models that will be queried by end-users
+    --- Files
+        --- fct_orders.sql
+        --- dim_customers.sql
+        --- _finance__models.yml
+        --- _finance__docs.md
+
+Materializations
+- Staging as views, Intermediate as Views/Ephemeral, Marts as Table, Incremental
+- Start with view. Too slow to query? Use table. Too slow to build? Use Incremental
+
+|        | View        | Table        | Incremental      |
+|---------------|----------------|----------------|----------------|
+| Build Time    | 💚 fastest — only stores logic | ❤️  slowest — linear to size of data| 💛  medium — builds flexible portion|
+| Build Costs   | 💚 lowest — no data processed | ❤️  highest — all data processed | 💛  medium — some data processed |
+| Query Costs   | ❤️  higher — reprocess every query | 💚 lower — data in warehouse | 💚  lower — data in warehous |
+| Freshness     | 💚 best — up-to-the-minute of query | 💛 moderate — up to most recent build | 💛 moderate — up to most recent build |
+| Complexity    | 💚 simple - maps to warehouse object | 💚 simple - map to warehouse concept | 💛 moderate - adds logical complexity |
+---------------------------------------------------------------------------------------------------------------------------------------
+Custom Schema:
+- Usado para criar novos schemas atraves da config +schema
+- Comportamento default eh gerado pela macro generate_schema_name que gera targetschema_customschema
+- Pode ser overwrite com criacao de uma macro na pasta macro com nome generate_schema_name botando-se o que quer
+- Pode ainda usar alternativa built-in para sovbrecrever com generate_schema_name_for_env
+  -- generate_schema_name_for_env
+     --- Para target.name == prod -> Se tiver customschema, final vai ser custom_schema. Se nao tiver customschema, eh targetschema
+     --- Outros ambientes -> Sempre sera customschema como target
+- generate_schema_name tem acesso as seguintes variaveis
+   -- {{target.etc}}
+   -- {{ env_var('DBT_NICE') }}
+   -- vars (Globaly and CLI)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Artifacts:
+- Manifest.json, catalog.json, sources.json, run_results.json
+- dbt docs generate gera catalog.json(Relacionado ao dw metadado ) e index.html (site estatico)
+- dbt source freshness gera sources.json (Stale or not, errors, warning, etc)
+- dbt run gera run_results.json 
+- manifest.json sao informacoes do proprio dbt gerados por quase todos comandos do dbt
+- https://docs.getdbt.com/reference/artifacts/dbt-artifacts
+---------------------------------------------------------------------------------------------------------------------------------------
+dbt run-operation macro_name --args 'dict' 
+dbt run --vars 'dict' 
+---------------------------------------------------------------------------------------------------------------------------------------
+on-run-start and on-run-end:
+- Lista de comandos sql usados no inicio e fim de um run, podendo ser run de
+ -- run, build, test, compile, snapshot, seed, docs generate (Basicamente qualquer comando que faz parse do projeto)
+- Podem chamar macros tambem e era mais usado para garanti acesso 
+
+- on-rund-end tem acesso no contexto a outras 3 variaveis -> schemas, database_schemas, results
+  -- "{% for schema in schemas %}grant usage on schema {{ schema }} to db_reader;{% endfor %}"
+  -- on-run-end "{{ grant_acess(schemas) }}"
+- curlies inside of curlies are acceptable in hooks (ie. on-run-start, on-run-end, pre-hook, and post-hook).
+  -- Code like this is both valid, and encouraged:
+    {{ config(post_hook="grant select on {{ this }} to role bi_role") }}
+    So why are curlies inside of curlies allowed in this case? 
+    Here, we actually want the string literal "grant select on {{ this }} ..." 
+    to be saved as the configuration value for the post-hook in this model. 
+    This string will be re-rendered when the model runs, resulting in a sensible 
+    SQL expression like grant select on "schema"."table".... being executed against the database.
+    These hooks are a special exception to the rule stated above
+---------------------------------------------------------------------------------------------------------------------------------------
+Tags
+- Sao aditivas
+- Funciona com run, seed, snapshot, test
+- Top Level, Table Level, Column Level, Test Lelve
+---------------------------------------------------------------------------------------------------------------------------------------
+Meta
+- Dicionarios mais especificos tem merge-cloober behavior
+---------------------------------------------------------------------------------------------------------------------------------------
+Flags
+
+Setting Flags
+- dbt_project.yml
+- env variables
+- CLI overwride
+
+
+DBT_TARGET_PATH
+DBT_FAIL_FAST
+DBT_LOG_PATH
+DBT_PROFILES_DIR
+DBT_STATE
+DBT_INDIRECT_SELECTION
+DBT_PROJECT_DIR
+
+dbt run --target-path
+dbt run --fail-fast or -x
+dbt run --log-path
+dbt run --profiles-dir
+dbt run --select state:modfied+ --state ./target
+--project-dir
+
+
+dbt run --log-format-file=json
+dbt run --log-level
+dbt run --no-write-json
+dbt run --warn-error
+
+dbt debug --config-dir
+(Mostra onde ta profiles.yml)
+
+
+Other Flags 
+- Se tiver no yaml com algum valor, CLI n passa por cima deles. Se for omitido, vai flag do CLI
+--store-failures
+--full_refresh or -f
+--indirect-selection=eager,cautious, buildable, empty
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Profiles.yml
+- Precedence Order
+ --profiles-dir
+ --DBT_PROFILES_DIR
+ --CWD
+ -- ~/.dbt/ directorio
+---------------------------------------------------------------------------------------------------------------------------------------
+Exit codes
+When dbt exits, it will return an exit code of either 0, 1, or 2.
+
+
+0	The dbt invocation completed without error.
+1	The dbt invocation completed with at least one handled error (eg. model syntax error, bad permissions, etc). 
+The run was completed, but some models may have been skipped.
+
+2	The dbt invocation completed with an unhandled error (eg. ctrl-c, network interruption, etc).
+---------------------------------------------------------------------------------------------------------------------------------------
+General Notes
+- https://docs.getdbt.com/reference/advanced-config-usage
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
+---------------------------------------------------------------------------------------------------------------------------------------
+Select Syntax
+
+dbt run --select path:models/staging/stripe+
+dbt run --select package:prova
+dbt run --select +exposure:powerbi
+dbt run --select staging+
+dbt run --select staging.stripe+
+dbt run --select staging.stripe.stg_stripe_targets
+dbt run --select path:models/staging/stripe/stg_stripe_sales.sql
+dbt run --select path:models/staging/stripe/
+dbt run --select models/staging/stripe/stg_stripe_sales.sql
+dbt run --select 2+joined_fact_sales+1
+dbt run --select tag:naoentendi+    
+dbt run --select "state:modified+" --state ./lets
+dbt run --select "state:modified+" -> dbt cloud (last job sucessful run with manifest.json (self, Enviromment))
+dbt run --select "result:success+" --state ./target
+dbt run --select "result:success+" --state ./target
+dbt run --select "result:error+" --state ./target
+dbt run --select "result:skipped+" --state ./target
+dbt run --select "source_status:fresher+" --state target/
+dbt run --select stg_stripe_sales.sql
+
+dbt build
+- Unico manifes.json e run_results.json
+ -- Relacionado a seeds, snapshots, models, tests
+- dbt build 
+
+
+dbt build vs dbt test 
+- dbt build dar skip em tests down stream, se teste no upstream deu pau, dar skill na relation e teste downstream
+- dbt test ta nem ai, roda tudo
+
+Uma opcao interessate  eh dbt build --resource-type test
+-- se teste dar pau, ele pula testes de modelos downstreasm
+
+
+Indirect Selection
+- empty -> Faz nenhum teste
+- cautious -> Apenas testes que referenciam exlucisvamente o modelo
+- buildable -> Apenas testes que referenciam o modelo, mas apenas upstream
+- eager -> Qualquer teste que referencia o nodo
+
+fail fast funciona assim
+- se tiver uma threads e deu erro, da cancel na proxima e skipa tudo
+- se tiver mais de uma e em qualquer uma da erro, espera as outras terminarem o teste e ai da skipp em todo resto

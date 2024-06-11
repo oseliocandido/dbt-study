@@ -1,0 +1,15 @@
+sources:  
+  - name: stripe
+    description: Related to stripe source system
+    config:
+      enabled: True
+    schema: public
+    tables:
+      - name: target
+        columns:
+          - name: sk_target
+            tests:
+              - column_max_value:
+                  value: 800
+      - name: sales
+        description: finally sales tables

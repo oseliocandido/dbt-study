@@ -1,0 +1,19 @@
+version: 2
+
+exposures:
+  - name: powerbi
+    label: nicebi
+    type: dashboard
+
+    description: esse eh exposture de powerbi
+    url: 'https://www.google.com'
+    maturity: low
+
+    depends_on:
+      - ref('stg_stripe_targets')
+      - source('stripe','target')
+      - source('jaffle_shop','orders')
+  
+    owner:
+      name: oseliocandido 
+      email: oseliocandido@outlook.comn

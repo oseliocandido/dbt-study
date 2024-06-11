@@ -1,0 +1,44 @@
+sources:
+  - name: jaffle_shop
+    description: eita
+    config:
+      enabled: True
+    
+    schema: public
+    loader: fivetran
+    loaded_at_field: loadtimestamp
+
+    freshness:
+      warn_after: {count: 30, period: day}
+      error_after: {count: 45, period: day}
+
+    meta:
+      contains_pii: true
+      owner: "@oselio"
+
+    tags: ['metadata']
+
+    tables:
+      - name: products
+        columns:
+          - name: sk_product
+            tags: ['seraquevai']
+            tests:
+              - unique
+      - name: orders
+        identifier: salesorder
+        description: source of salesorder table
+        columns:
+          - name: sk_salesorder
+            tags: ['teste123']
+            tests:
+              - unique
+        freshness: 
+          warn_after:
+            count: 30
+            period: day
+          error_after:
+            count: 45
+            period: day
+      - name: salesperson
+

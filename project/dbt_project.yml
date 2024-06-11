@@ -1,0 +1,50 @@
+name: 'prova'
+version: '1.0.0'
+config-version: 2
+
+
+profile: 'salesdbt'
+
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+packages-install-path: dbt_packages
+
+target-path: target
+log-path: logs 
+
+
+clean-targets:        
+  - "target"
+  - "dbt_packages"
+
+
+models:
+  prova:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+
+seeds:
+  prova:
+      +schema: testing
+
+
+snapshots: 
+  prova:
+    +target_schema: snapshot
+    +unique_key: sk_target
+
+
+tests:
+  prova:
+    +limit: 100
+    +store_failures: true 
+    +severity: error

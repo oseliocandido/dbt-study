@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stg_jaffle_shop_products
+    description: Products are really nice
+    config:
+      enabled: true 
+      materialized: view
+      full_refresh: false
+    columns:
+      - name: sk_product
+        description: Surrogate key of product
+        tests:
+          - unique
+          - not_null 
+  - name: stg_jaffle_shop_orders
+  - name: stg_jaffle_shop_people
+
+
+  - name: fact_sales_orders
+    description: fact orders
+    config:
+      enabled: true
+      materialized: table
+    columns:
+      - name: salesterritorykey
+        description: key of the territory in fact
+        tags: ['pk']
+        tests:
+          - not_null
+          - unique
+
+
+  - name: fact_sales_orders_incremental
+    description: fact orders
+    config:
+      enabled: true
+      materialized: incremental
+    columns:
+      - name: salesterritorykey
+        description: key of the territory in fact
+        tags: ['pk_incremental']
+        tests:
+          - not_null
+          - unique

@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+  - name: data
+    description: static data from seed file
+    config:
+      enabled: true 
+      schema: custom
+      alias: data_alias
+      fulll_refresh: false
+
+      tags: ['seed']
+      persist_docs: 
+        columns: true 
+        relation: true
+  

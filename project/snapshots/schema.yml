@@ -1,0 +1,13 @@
+snapshots:
+  - name: aprendendo
+    description: snapshot of target table
+    docs:
+      show: true
+    columns:
+      - name: sk_target
+        tests:
+          - bora_generic:
+              value: 20
+              config:
+                severity: error
+                store_failures: true
